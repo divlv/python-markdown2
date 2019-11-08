@@ -1944,7 +1944,6 @@ class Markdown(object):
             text = text.replace(before, after)
         
         text = text.strip().replace("\n", "<br />")
-        
         hashed = _hash_text(text)
         self._escape_table[text] = hashed
         return hashed        

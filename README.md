@@ -1,3 +1,10 @@
+##TL;DR
+
+Start as `\python-markdown2\lib>python markdown2.py src.md > dst.html`
+
+
+##Original:
+
 Markdown is a light text markup format and a processor to convert that to HTML.
 The originator describes it as follows:
 
