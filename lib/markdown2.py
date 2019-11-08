@@ -1871,8 +1871,16 @@ class Markdown(object):
 
     def _code_span_sub(self, match):
         c = match.group(2).strip(" \t")
-        c = self._encode_code(c)
-        return "<code>%s</code>" % c
+        # Count how much ENTERs do we have here
+        cc = c.strip()
+        # .. and define CODE block style
+        if cc.count("\n")>0:
+            tag = "div"
+        else:
+            tag="span"
+        
+        c = self._encode_code_2(c)
+        return "<%s style='background-color:#EAF4FF; border: 1px solid #E2E2E2; font-family:Courier, monospace'>%s</%s>" % (tag,c,tag)
 
     def _do_code_spans(self, text):
         #   *   Backtick quotes are used for <code></code> spans.
@@ -1918,6 +1926,30 @@ class Markdown(object):
         self._escape_table[text] = hashed
         return hashed
 
+    def _encode_code_2(self, text):
+        """Encode/escape certain characters inside Markdown code runs.
+        The point is that in code, these characters are literals,
+        and lose their special Markdown meanings.
+        """
+        
+        replacements = [
+            # Encode all ampersands; HTML entities are not
+            # entities within a Markdown code span.
+            ('&', '&amp;'),
+            # Do the angle bracket song and dance:
+            ('<', '&lt;'),
+            ('>', '&gt;'),
+        ]
+        for before, after in replacements:
+            text = text.replace(before, after)
+        
+        text = text.strip().replace("\n", "<br />")
+        
+        hashed = _hash_text(text)
+        self._escape_table[text] = hashed
+        return hashed        
+        
+        
     _strike_re = re.compile(r"~~(?=\S)(.+?)(?<=\S)~~", re.S)
     def _do_strike(self, text):
         text = self._strike_re.sub(r"<strike>\1</strike>", text)
