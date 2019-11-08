@@ -1,9 +1,11 @@
-##TL;DR
+## TL;DR
+
+Fixed version: code blocks for WIKI html.
 
 Start as `\python-markdown2\lib>python markdown2.py src.md > dst.html`
 
 
-##Original:
+## Original:
 
 Markdown is a light text markup format and a processor to convert that to HTML.
 The originator describes it as follows:
